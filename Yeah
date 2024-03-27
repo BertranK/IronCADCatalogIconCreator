@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color and Font Picker</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        display: flex;
+        justify-content: center; /* Align horizontally */
+        align-items: center; /* Align vertically */
+        height: 100vh;
+        margin: 0;
+        font-family: 'Roboto', sans-serif; /* Applying Google Font */
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Align horizontally */
+        justify-content: space-between; /* Distribute vertically */
+        height: 80%; /* Adjust the height of the container */
+        max-height: 720px; /* Limit maximum height */
+    }
+
+    #color-preview {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        margin-bottom: 10px;
+        font-family: 'Roboto', sans-serif; /* Applying Google Font */
+        display: flex;
+        justify-content: center; /* Align text horizontally */
+        align-items: center; /* Align text vertically */
+    }
+    #color-picker {
+        width: 100px;
+        height: 40px;
+        font-size: 16px;
+    }
+    #text-input {
+        width: 200px; /* Adjust the width of the input field */
+        height: 40px;
+        font-size: 16px;
+    }
+    button {
+        width: 100px;
+        height: 40px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+    <h1>IronCAD Catalog Icon Creator</h1>
+    <div class="container">
+        <h2>Select a color:</h2>
+        <input type="color" id="color-picker" onchange="updateColor()" value="#ffffff">
+        
+        <h2>Enter the text:</h2>
+        <input type="text" id="text-input" placeholder="Enter text" onchange="updateText()">
+        
+        <div id="color-preview"></div>
+        
+        <button onclick="downloadIcon()">Download as ICO (48x48)</button>
+    </div>
+
+    <script>
+        function updateColor() {
+            var colorPicker = document.getElementById("color-picker");
+            var colorPreview = document.getElementById("color-preview");
+            var selectedColor = colorPicker.value;
+            colorPreview.style.backgroundColor = selectedColor;
+        }
+
+        function updateText() {
+            var textInput = document.getElementById("text-input");
+            var text = textInput.value.trim();
+            var colorPreview = document.getElementById("color-preview");
+            colorPreview.textContent = text;
+        }
+
+        function downloadIcon() {
+            var colorPreview = document.getElementById("color-preview");
+            var canvas = document.createElement("canvas");
+            canvas.width = 48;
+            canvas.height = 48;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = colorPreview.style.backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add text to the canvas
+            var text = colorPreview.textContent;
+            ctx.font = "12px 'Roboto', sans-serif"; // Font size and family
+            ctx.fillStyle = "#000"; // Text color
+            ctx.textAlign = "center"; // Text alignment
+            ctx.textBaseline = "middle"; // Text baseline alignment
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2); // Position text at the center
+
+            // Convert the canvas to a data URL in ICO format
+            var dataURL = canvas.toDataURL("image/x-icon");
+
+            // Create a temporary link element
+            var link = document.createElement("a");
+            link.href = dataURL;
+            link.download = "color_preview.ico";
+            document.body.appendChild(link);
+
+            // Trigger the download
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
