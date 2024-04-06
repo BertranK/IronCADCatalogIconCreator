@@ -28,7 +28,8 @@
     .shape-selector,
     .text-input,
     .preview,
-    .download-btn {
+    .download-btn,
+    .text-below-download {
       display: flex;
       justify-content: center;
       margin-bottom: 20px;
@@ -46,6 +47,16 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
+    }
+
+    .color-selector {
+      align-items: center;
+    }
+
+    .color-palette-icon::before {
+      content: "🎨";
+      font-size: 32px;
+      margin-right: 10px;
     }
 
     .color-selector input[type="color"] {
@@ -82,6 +93,11 @@
       cursor: pointer;
     }
 
+    .text-below-download a {
+      text-decoration: none;
+      color: #4CAF50;
+    }
+
     h1 {
       text-align: center;
     }
@@ -89,8 +105,9 @@
 </head>
 <body>
   <div class="container">
-    <h1>IronCAD Catalog Icon Creator</h1>
+    <h1>IronCAD Catalog Icon Creator ✨</h1>
     <div class="color-selector">
+      <div class="color-palette-icon"></div>
       <input type="color" id="text-color-picker" value="#000000">
     </div>
     <div class="shape-selector">
@@ -106,6 +123,9 @@
     </div>
     <div class="download-btn">
       <button id="download-btn">Download PNG (48x48px)</button>
+    </div>
+    <div class="text-below-download">
+      <a href="https://toycon.softonic.com/">Also you need a this program! .PNGs to .ICOs</a>
     </div>
   </div>
 
@@ -139,7 +159,7 @@
           ctx.fillRect(0, 0, 48, 48);
           break;
         case 'triangle':
-          drawTriangle(24, 40, 12, 8, currentTextColor);
+          drawTriangle(24, 48, 48, 48, currentTextColor);
           break;
       }
 
