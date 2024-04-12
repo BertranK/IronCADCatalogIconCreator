@@ -164,7 +164,7 @@
       }
 
       // Set the text color based on the luminance of the background
-      const bgColor = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      const bgColor = ctx.getImageData(24, 24, 1, 1).data;
       const luminance = (0.299 * bgColor[0] + 0.587 * bgColor[1] + 0.114 * bgColor[2]) / 255;
       const textColor = luminance > 0.5 ? '#000000' : '#ffffff';
       ctx.fillStyle = textColor;
