@@ -115,6 +115,22 @@
     h1 {
       text-align: center;
     }
+    .texture-options {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .texture-options label {
+      margin-right: 10px;
+    }
+
+    .texture-options label::before {
+      content: "🌓";
+      font-size: 24px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -133,6 +149,10 @@
       <button id="metallic-btn">Metallic</button>
       <button id="sparkle-btn">Sparkle</button>
       <button id="bumpy-btn">Bumpy</button>
+    </div>
+    <div class="texture-options">
+      <label for="texture-density"></label>
+      <input type="range" id="texture-density" min="1" max="100" value="50">
     </div>
     <div class="text-input">
       <input type="text" id="text-input" placeholder="Enter text here">
@@ -159,11 +179,13 @@
     const metallicBtn = document.getElementById('metallic-btn');
     const sparkleBtn = document.getElementById('sparkle-btn');
     const bumpyBtn = document.getElementById('bumpy-btn');
+    const textureDensitySlider = document.getElementById('texture-density');
     const downloadBtn = document.getElementById('download-btn');
 
     let currentShape = 'circle';
     let currentTextColor = '#000000';
     let currentTexture = 'none';
+    let textureDensity = 50;
 
     function drawPreview() {
       // Clear the canvas
@@ -212,6 +234,9 @@
     }
 
     function applyTexture() {
+      ctx.save();
+      ctx.clip();
+
       switch (currentTexture) {
         case 'metallic':
           applyMetallicTexture();
@@ -223,24 +248,23 @@
           applyBumpyTexture();
           break;
       }
-    }
 
-    function applyMetallicTexture() {
-      ctx.save();
-      ctx.clip();
-      const gradient = ctx.createLinearGradient(0, 0, 48, 48);
-      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
-      gradient.addColorStop(0.5, 'rgba(128, 128, 128, 0.8)');
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 48, 48);
       ctx.restore();
     }
 
+    function applyMetallicTexture() {
+      const gradient = ctx.createLinearGradient(0, 0, 48, 48);
+      const reflectivity = textureDensity / 100;
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity})`);
+      gradient.addColorStop(0.5, `rgba(128, 128, 128, ${reflectivity})`);
+      gradient.addColorStop(1, `rgba(0, 0, 0, ${reflectivity})`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 48, 48);
+    }
+
     function applySparkleTexture() {
-      ctx.save();
-      ctx.clip();
-      for (let i = 0; i < 50; i++) {
+      const sparkleCount = Math.floor(textureDensity / 2);
+      for (let i = 0; i < sparkleCount; i++) {
         const x = Math.random() * 48;
         const y = Math.random() * 48;
         const size = Math.random() * 2;
@@ -249,13 +273,10 @@
         ctx.arc(x, y, size, 0, 2 * Math.PI);
         ctx.fill();
       }
-      ctx.restore();
     }
 
     function applyBumpyTexture() {
-      ctx.save();
-      ctx.clip();
-      const bumpSize = 2;
+      const bumpSize = Math.ceil(textureDensity / 25);
       for (let x = 0; x < 48; x += bumpSize) {
         for (let y = 0; y < 48; y += bumpSize) {
           const offset = Math.random() * bumpSize;
@@ -265,7 +286,6 @@
           ctx.fillRect(x + offset, y + offset, bumpSize, bumpSize);
         }
       }
-      ctx.restore();
     }
 
     textInput.addEventListener('input', () => {
@@ -325,11 +345,21 @@
       drawPreview();
     });
 
+    textureDensitySlider.addEventListener('input', () => {
+      textureDensity = parseInt(textureDensitySlider.value);
+      drawPreview();
+    });
+
     downloadBtn.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.download = 'icon.png';
-      link.href = canvas.toDataURL('image/png', 1.0);
-      link.click();
+      try {
+        const link = document.createElement('a');
+        link.download = 'icon.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+      } catch (error) {
+        console.error('Error downloading the icon:', error);
+        alert('An error occurred while downloading the icon. Please try again.');
+      }
     });
 
     drawPreview();
