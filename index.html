@@ -346,7 +346,7 @@
     }
 
     function applyBumpyTexture() {
-      const bumpSize = Math.max(1, Math.ceil((100 - textureDensity) / 25));
+      const bumpSize = Math.ceil(textureDensity / 25);
       for (let x = 0; x < 48; x += bumpSize) {
         for (let y = 0; y < 48; y += bumpSize) {
           const offset = Math.random() * bumpSize;
