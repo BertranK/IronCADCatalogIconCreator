@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://example.com/logo.png" alt="IronCAD Catalog Icon Creator Logo" width="200">
-</p>
-
 <h1 align="center">IronCAD Catalog Icon Creator ✨</h1>
 
 <p align="center">
