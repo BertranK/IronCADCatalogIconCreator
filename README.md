@@ -1,4 +1,4 @@
-<h1 align="center">IronCAD Catalog Icon Creator ✨</h1>
+<h1 align="center">IronCAD Catalog Icon Creator ✨ by Claude Ai</h1>
 
 <p align="center">
   <a href="#features">Features</a> •
