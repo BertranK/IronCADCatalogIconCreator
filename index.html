@@ -345,18 +345,18 @@
       }
     }
 
-    function applyBumpyTexture() {
-      const bumpSize = Math.ceil(textureDensity / 25);
-      for (let x = 0; x < 48; x += bumpSize) {
-        for (let y = 0; y < 48; y += bumpSize) {
-          const offset = Math.random() * bumpSize;
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-          ctx.fillRect(x, y, bumpSize, bumpSize);
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-          ctx.fillRect(x + offset, y + offset, bumpSize, bumpSize);
-        }
+  function applyBumpyTexture() {
+    const bumpSize = Math.ceil((100 - textureDensity) / 25);
+    for (let x = 0; x < 48; x += bumpSize) {
+      for (let y = 0; y < 48; y += bumpSize) {
+        const offset = Math.random() * bumpSize;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillRect(x, y, bumpSize, bumpSize);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.fillRect(x + offset, y + offset, bumpSize, bumpSize);
       }
     }
+  }
 
     textInput.addEventListener('input', () => {
       drawPreview();
