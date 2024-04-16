@@ -71,13 +71,17 @@
     .shape-selector button,
     .texture-selector button {
       margin: 0 5px;
-      padding: 10px 20px;
+      padding: 5px 10px;
       font-size: 16px;
       border: none;
       border-radius: 4px;
       color: white;
       cursor: pointer;
       width: 120px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .shape-selector button {
@@ -115,11 +119,13 @@
     h1 {
       text-align: center;
     }
+    
     .texture-options {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 20px;
+      position: relative;
     }
 
     .texture-options label {
@@ -131,12 +137,14 @@
       font-size: 24px;
       vertical-align: middle;
     }
-   .texture-options label:last-child::after {
+    
+    .texture-options label:last-child::after {
       content: "👩";
       font-size: 24px;
       vertical-align: middle;
     }
-        .shape-selector button::before {
+    
+    .shape-selector button::before {
       margin-right: 5px;
     }
     
@@ -145,11 +153,11 @@
     }
     
     #rectangle-btn::before {
-      content: "▭";
+      content: "⬜";
     }
     
     #triangle-btn::before {
-      content: "▵";
+      content: "▲";
     }
     
     .texture-selector button::before {
@@ -166,6 +174,30 @@
     
     #bumpy-btn::before {
       content: "🪨";
+    }
+    
+    #texture-density-percentage {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .texture-options:hover #texture-density-percentage {
+      opacity: 1;
+    }
+
+    .texture-density-icon::after {
+      content: "👩";
+      font-size: 24px;
+      margin-left: 10px;
     }
   </style>
 </head>
@@ -189,6 +221,8 @@
     <div class="texture-options">
       <label for="texture-density"></label>
       <input type="range" id="texture-density" min="1" max="100" value="50">
+      <div id="texture-density-percentage">Texture Density: 50%</div>
+      <div class="texture-density-icon"></div>
     </div>
     <div class="text-input">
       <input type="text" id="text-input" placeholder="Enter text here">
@@ -383,6 +417,8 @@
 
     textureDensitySlider.addEventListener('input', () => {
       textureDensity = parseInt(textureDensitySlider.value);
+      const textureDensityPercentage = document.getElementById('texture-density-percentage');
+      textureDensityPercentage.textContent = `Texture Density: ${textureDensity}%`;
       drawPreview();
     });
 
